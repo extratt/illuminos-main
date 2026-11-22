@@ -1,0 +1,2712 @@
+/* ===== ШРИФТЫ ===== */
+
+@font-face {
+    font-family: "NauryzRedKeds";
+    src: url("../fonts/NauryzRedKeds.ttf") format("truetype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "Advaken Sans";
+    src: url("../fonts/Advaken_Sans.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "RockStar";
+    src: url("../fonts/RS-regular.otf") format("opentype");
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "RockStar";
+    font-weight: 700;
+    src: url("../fonts/RS-extrabold.otf") format("opentype");
+    font-display: swap;
+}
+
+/* ===== ПЕРЕМЕННЫЕ ===== */
+
+:root {
+    --bg: #0D0F0A;
+    --bg-soft: #12150e;
+    --bg-card: #161810;
+    --border: #2a2d24;
+    --border-soft: #1f2219;
+    
+    /* Цветовая основа интерфейса */
+    --text: #F5EEE5;
+    --text-muted: #b8b8a8;
+    --accent: #FCFF1A;
+    --accent-pink: #FF2071;
+    
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+    --shadow-pink: 0 10px 30px rgba(255, 32, 113, 0.25);
+    --transition: 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+    --header-h: 72px;
+}
+
+/* ===== СБРОС И БАЗА ===== */
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+}
+
+body {
+    font-family: "RockStar", Arial, sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+}
+
+a {
+    color: var(--text);
+    text-decoration: none;
+    transition: color var(--transition);
+}
+
+img {
+    max-width: 100%;
+    display: block;
+    height: auto;
+}
+
+ul, ol {
+    list-style: none;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+main.main {
+    min-height: calc(100vh - var(--header-h) - 260px);
+    display: block;
+}
+
+/* ===== ИКОНКИ ===== */
+
+/* Иконка поиска затемнена, чтобы читалась на жёлтой кнопке */
+.search-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+    filter: brightness(0);
+}
+
+.header-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+/* Иконка внутри кнопки не должна растягиваться */
+.btn-icon {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    flex: 0 0 auto;
+    vertical-align: middle;
+}
+
+/* На жёлтой кнопке иконку делаем тёмной для контраста */
+.btn:not(.btn-outline) .btn-icon {
+    filter: brightness(0);
+}
+
+.btn:not(.btn-outline):hover .btn-icon {
+    filter: brightness(0) invert(1);
+}
+
+.social-icon {
+    height: 22px;
+    width: auto;
+    display: block;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+    transition: opacity var(--transition), transform var(--transition);
+}
+
+/* Тёмная стрелка читается и на розовом, и на жёлтом фоне */
+.scroll-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+    margin: 0;
+    filter: brightness(0);
+}
+
+/* ===== КНОПКИ ===== */
+
+.btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 22px;
+    background-color: var(--accent);
+    color: var(--bg);
+    border: 2px solid var(--accent);
+    border-radius: var(--radius-sm);
+    font-family: "Advaken Sans", Arial, sans-serif;
+    font-size: 15px;
+    font-weight: bold;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+    transition: all var(--transition);
+}
+
+.btn::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(120deg, transparent 30%, rgba(255, 255, 255, 0.4), transparent 70%);
+    transform: translateX(-120%);
+    transition: transform 0.6s ease;
+}
+
+.btn:hover {
+    background-color: var(--accent-pink);
+    border-color: var(--accent-pink);
+    color: var(--text);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-pink);
+}
+
+.btn:hover::before {
+    transform: translateX(120%);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-outline {
+    background-color: transparent;
+    color: var(--text);
+    border: 2px solid var(--accent-pink);
+}
+
+.btn-outline:hover {
+    background-color: var(--accent-pink);
+    color: var(--text);
+    box-shadow: var(--shadow-pink);
+}
+
+/* ===== ШАПКА ===== */
+
+.header {
+    background-color: rgba(13, 15, 10, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 0;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    transition: background-color var(--transition), box-shadow var(--transition);
+}
+
+.header.scrolled {
+    background-color: rgba(13, 15, 10, 0.98);
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+    border-bottom: 1px solid rgba(255, 32, 113, 0.2);
+}
+
+.header-inner {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+/* Блоки шапки выравниваются в одну строку */
+.header-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 18px;
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.logo {
+    display: inline-flex;
+    align-items: center;
+    text-decoration: none;
+    transition: transform var(--transition), filter var(--transition);
+}
+
+.logo:hover {
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 10px rgba(252, 255, 26, 0.4)) drop-shadow(0 0 20px rgba(255, 32, 113, 0.3));
+}
+
+.logo-img {
+    height: 40px;
+    width: auto;
+    display: block;
+}
+
+.nav {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+}
+
+.nav a {
+    display: inline-flex;
+    align-items: center;
+    height: 40px;
+    padding: 0 12px;
+    font-family: "NauryzRedKeds", Arial, sans-serif;
+    font-size: 17px;
+    color: var(--text);
+    white-space: nowrap;
+    border-radius: var(--radius-sm);
+    position: relative;
+    transition: color var(--transition), background-color var(--transition);
+}
+
+.nav a::after {
+    content: "";
+    position: absolute;
+    left: 12px;
+    right: 12px;
+    bottom: 4px;
+    height: 2px;
+    background: var(--accent-pink);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform var(--transition);
+}
+
+.nav a:hover {
+    color: var(--accent-pink);
+}
+
+.nav a:hover::after {
+    transform: scaleX(1);
+}
+
+/* Поиск остаётся в шапке на широких экранах */
+.search-form {
+    display: flex;
+    gap: 8px;
+    flex: 0 1 260px;
+    width: 260px;
+    max-width: 100%;
+}
+
+.search-form input {
+    height: 40px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg-card);
+    color: var(--text);
+    width: 100%;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.search-form input:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 0 3px rgba(255, 32, 113, 0.2);
+}
+
+.search-form button {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: none;
+    border-radius: var(--radius-sm);
+    background-color: var(--accent);
+    color: var(--bg);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background-color var(--transition), transform var(--transition);
+}
+
+.search-form button:hover {
+    background-color: var(--accent-pink);
+    color: var(--text);
+    transform: translateY(-1px);
+}
+
+/* Иконки пользователя всегда видны справа в шапке */
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex: 0 0 auto;
+}
+
+.user-link {
+    color: var(--accent);
+    font-weight: bold;
+    transition: color var(--transition);
+}
+
+.user-link:hover {
+    color: var(--accent-pink);
+}
+
+/* Иконки экономят место в шапке */
+.header-icon-link {
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: border-color var(--transition), background-color var(--transition), transform var(--transition);
+}
+
+.header-icon-link:hover {
+    border-color: var(--accent-pink);
+    background: rgba(255, 32, 113, 0.12);
+    transform: translateY(-2px);
+}
+
+.header-icon-accent {
+    border-color: var(--accent);
+}
+
+.header-icon-accent:hover {
+    border-color: var(--accent-pink);
+}
+
+/* Бургер появляется только на узких экранах */
+.burger {
+    display: none;
+    flex: 0 0 auto;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--bg-card);
+    cursor: pointer;
+    align-items: center;
+    justify-content: center;
+    transition: border-color var(--transition), background-color var(--transition);
+}
+
+.burger:hover {
+    border-color: var(--accent-pink);
+    background: rgba(255, 32, 113, 0.12);
+}
+
+.burger-icon {
+    width: 20px;
+    height: 20px;
+    display: block;
+    transition: transform var(--transition);
+}
+
+.burger.active .burger-icon {
+    transform: rotate(90deg);
+}
+
+/* ===== ГЕРОЙ ===== */
+
+.hero {
+    padding: 110px 0;
+    background: linear-gradient(135deg, #0D0F0A 0%, #12150e 55%, #0D0F0A 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+/* Постеры плавно движутся на фоне, не мешая тексту */
+.hero-posters {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    overflow: hidden;
+}
+
+.hero-poster {
+    position: absolute;
+    width: 150px;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 1px solid rgba(252, 255, 26, 0.18);
+    box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+    opacity: 0.28;
+    filter: saturate(0.85);
+    animation: heroPosterFloat 12s ease-in-out infinite alternate;
+    animation-delay: calc(var(--i) * -1.5s);
+}
+
+.hero-poster:nth-child(1) { top: -12%; left: 4%;  --rot: -12deg; }
+
+.hero-poster:nth-child(2) { top: 8%;   right: 7%; --rot: 10deg; }
+
+.hero-poster:nth-child(3) { bottom: -14%; left: 18%; --rot: 8deg; }
+
+.hero-poster:nth-child(4) { bottom: 2%; right: 22%; --rot: -8deg; }
+
+.hero-poster:nth-child(5) { top: 22%; left: 33%; --rot: 15deg; }
+
+.hero-poster:nth-child(6) { top: -16%; right: 32%; --rot: -15deg; }
+
+.hero-poster:nth-child(7) { bottom: 12%; left: 56%; --rot: 5deg; }
+
+.hero-poster:nth-child(8) { top: 36%; right: 2%; --rot: -10deg; }
+
+@keyframes heroPosterFloat {
+    from { transform: translate3d(0, -12px, 0) rotate(var(--rot)) scale(0.98); }
+    to   { transform: translate3d(0, 18px, 0) rotate(calc(var(--rot) + 3deg)) scale(1.02); }
+}
+
+/* Свечение выделяет баннер, не перекрывая контент */
+.hero::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    background: radial-gradient(circle at 70% 50%, rgba(255, 32, 113, 0.15), transparent 60%),
+                radial-gradient(circle at 20% 30%, rgba(252, 255, 26, 0.1), transparent 50%);
+    pointer-events: none;
+}
+
+.hero .container {
+    position: relative;
+    z-index: 2;
+}
+
+.hero h1 {
+    font-family: "Advaken Sans", Arial, sans-serif;
+    font-size: clamp(32px, 5vw, 52px);
+    margin-bottom: 20px;
+    line-height: 1.15;
+    animation: fadeUp 0.8s ease both;
+}
+
+.hero h1 span {
+    color: var(--accent-pink);
+    text-shadow: 0 0 20px rgba(255, 32, 113, 0.4);
+}
+
+.hero p {
+    max-width: 600px;
+    margin-bottom: 30px;
+    color: var(--text);
+    animation: fadeUp 0.8s 0.1s ease both;
+}
+
+.hero-buttons {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    animation: fadeUp 0.8s 0.2s ease both;
+}
+
+/* ===== СЕКЦИИ И ЗАГОЛОВКИ ===== */
+
+.section {
+    padding: 70px 0;
+}
+
+.section-dark {
+    background-color: var(--bg-soft);
+    border-top: 1px solid rgba(255, 32, 113, 0.05);
+    border-bottom: 1px solid rgba(255, 32, 113, 0.05);
+}
+
+.section-title {
+    font-family: "Advaken Sans", Arial, sans-serif;
+    font-size: clamp(24px, 3vw, 30px);
+    margin-bottom: 30px;
+    color: var(--text);
+    position: relative;
+    padding-left: 18px;
+}
+
+/* Полоска помогает выделить заголовок среди контента */
+.section-title::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px;
+    height: 70%;
+    background: linear-gradient(180deg, var(--accent-pink), var(--accent));
+    border-radius: 4px;
+    box-shadow: 0 0 10px rgba(255, 32, 113, 0.5);
+}
+
+/* Компактный заголовок страницы перед каталогом */
+.page-head {
+    padding: 30px 0 22px;
+    background: linear-gradient(180deg, var(--bg-soft), var(--bg));
+    border-bottom: 1px solid var(--border-soft);
+}
+
+.page-head h1 {
+    font-family: "Advaken Sans", Arial, sans-serif;
+    font-size: clamp(24px, 3vw, 32px);
+    color: var(--accent);
+    margin-bottom: 4px;
+    text-shadow: 0 0 30px rgba(252, 255, 26, 0.2);
+}
+
+.page-head p {
+    color: var(--text-muted);
+    max-width: 700px;
+    font-size: 14px;
+}
+
+/* Каталог прижат к заголовку, чтобы не было пустого зазора */
+.page-head + .section {
+    padding-top: 30px;
+}
+
+/* ===== КАТАЛОГ И КАРТОЧКИ ===== */
+
+.content-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 22px;
+}
+
+.card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+    position: relative;
+    transition: all var(--transition);
+    display: flex;
+    flex-direction: column;
+}
+
+/* Подсветка говорит, что карточку можно открыть */
+.card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-pink);
+    box-shadow: var(--shadow-pink);
+}
+
+.card img {
+    width: 100%;
+    aspect-ratio: 2 / 3;
+    object-fit: cover;
+    transition: transform 0.5s ease;
+}
+
+.card:hover img {
+    transform: scale(1.06);
+}
+
+.card-info {
+    padding: 14px 16px 18px;
+    position: relative;
+    z-index: 1;
+    background: var(--bg-card);
+    border-top: 1px solid transparent;
+    transition: border-color var(--transition);
+}
+
+.card:hover .card-info {
+    border-top-color: rgba(255, 32, 113, 0.2);
+}
+
+.card-info h3 {
+    font-family: "NauryzRedKeds", Arial, sans-serif;
+    font-size: 20px;
+    margin-bottom: 6px;
+    line-height: 1.25;
+    overflow-wrap: anywhere;
+    transition: color var(--transition);
+}
+
+.card:hover .card-info h3 {
+    color: var(--accent-pink);
+}
+
+.card-info p {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Карточки появляются по очереди, а не все сразу */
+.card {
+    opacity: 0;
+    transform: translateY(18px);
+    animation: cardIn 0.5s ease forwards;
+}
+
+.card:nth-child(1) { animation-delay: 0.03s; }
+
+.card:nth-child(2) { animation-delay: 0.06s; }
+
+.card:nth-child(3) { animation-delay: 0.09s; }
+
+.card:nth-child(4) { animation-delay: 0.12s; }
+
+.card:nth-child(5) { animation-delay: 0.15s; }
+
+.card:nth-child(6) { animation-delay: 0.18s; }
+
+.card:nth-child(7) { animation-delay: 0.21s; }
+
+.card:nth-child(8) { animation-delay: 0.24s; }
+
+/* ===== КАТЕГОРИИ И ФИЛЬТРЫ ===== */
+
+/* Сетка не оставляет одинокий элемент в конце ряда */
+.category-list, .filter-box {
+    display: grid;
+    gap: 12px;
+}
+
+.category-list {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.filter-box {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    margin-bottom: 30px;
+}
+
+.category-item, .filter-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    background-color: var(--bg-card);
+    font-size: 14px;
+    line-height: 1.3;
+    overflow-wrap: anywhere;
+    transition: all var(--transition);
+}
+
+.category-item:hover, .filter-btn:hover {
+    border-color: var(--accent-pink);
+    color: var(--accent-pink);
+    transform: translateY(-2px);
+}
+
+/* Активный фильтр выделен, чтобы был виден выбор */
+.filter-btn.active {
+    background-color: var(--accent-pink);
+    color: var(--text);
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 15px rgba(255, 32, 113, 0.4);
+}
+
+/* ===== СТРАНИЦА КОНТЕНТА ===== */
+
+.content-hero {
+    padding: 60px 0;
+    background-color: var(--bg-soft);
+    position: relative;
+    overflow: hidden;
+}
+
+.content-hero::before {
+    content: "";
+    position: absolute;
+    top: -50%;
+    right: -20%;
+    width: 600px;
+    height: 600px;
+    background: radial-gradient(circle, rgba(255, 32, 113, 0.1), transparent 70%);
+    pointer-events: none;
+}
+
+.content-hero-inner {
+    display: flex;
+    gap: 40px;
+    align-items: flex-start;
+    position: relative;
+    z-index: 1;
+}
+
+.content-main-info h1 {
+    font-family: "NauryzRedKeds", Arial, sans-serif;
+    font-size: clamp(32px, 4vw, 48px);
+    line-height: 1.1;
+    color: var(--text);
+    overflow-wrap: anywhere;
+    margin-bottom: 12px;
+}
+
+.content-poster {
+    width: 300px;
+    flex-shrink: 0;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    transition: transform var(--transition), box-shadow var(--transition);
+    border: 1px solid var(--border);
+}
+
+.content-poster:hover {
+    transform: scale(1.02);
+    box-shadow: var(--shadow-pink);
+    border-color: var(--accent-pink);
+}
+
+.content-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.content-tags span {
+    padding: 6px 14px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    font-size: 14px;
+    background: var(--bg-card);
+    transition: all var(--transition);
+}
+
+.content-tags span:hover {
+    border-color: var(--accent-pink);
+    color: var(--accent-pink);
+}
+
+.content-description {
+    margin: 20px 0;
+    max-width: 650px;
+    color: var(--text-muted);
+    line-height: 1.7;
+}
+
+.content-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 25px;
+}
+
+.content-poster-wrap {
+    flex-shrink: 0;
+    width: 300px;
+}
+
+.original-title {
+    color: var(--text-muted);
+    font-size: 18px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.age-limit {
+    border: 1px solid var(--text-muted);
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-size: 12px;
+}
+
+.content-rating-block {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+    background: rgba(255, 255, 255, 0.03);
+    padding: 10px 20px;
+    border-radius: var(--radius);
+    display: inline-flex;
+}
+
+.big-rating {
+    font-size: 32px;
+    font-weight: bold;
+    color: var(--accent);
+    text-shadow: 0 0 10px rgba(252, 255, 26, 0.3);
+}
+
+.rating-info {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* ===== СЕЗОНЫ И ЭПИЗОДЫ ===== */
+
+.season-box {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 22px;
+    margin-bottom: 20px;
+    transition: border-color var(--transition);
+}
+
+.season-box:hover {
+    border-color: var(--accent-pink);
+}
+
+.season-box h3 {
+    color: var(--accent);
+    margin-bottom: 15px;
+    font-family: "Advaken Sans", Arial, sans-serif;
+}
+
+.episode-list li {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 12px 0;
+    border-bottom: 1px solid var(--border);
+    transition: padding-left var(--transition), color var(--transition);
+}
+
+.episode-list li:last-child {
+    border-bottom: none;
+}
+
+.episode-list li:hover {
+    padding-left: 8px;
+    color: var(--accent-pink);
+}
+
+.episode-list li span:last-child {
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+/* ===== ФОРМЫ (АВТОРИЗАЦИЯ) ===== */
+
+button, input, select, textarea {
+    font: inherit;
+    color: inherit;
+}
+
+.auth-page {
+    padding: 80px 0;
+}
+
+.auth-box {
+    max-width: 420px;
+    margin: 0 auto;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 36px;
+    box-shadow: var(--shadow);
+    animation: fadeUp 0.6s ease both;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Полоска сверху визуально отделяет форму */
+.auth-box::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-pink));
+}
+
+.auth-box h1 {
+    font-family: "Advaken Sans", Arial, sans-serif;
+    margin-bottom: 22px;
+    color: var(--accent);
+    font-size: 28px;
+}
+
+label {
+    display: block;
+    margin: 16px 0 6px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+/* Подсказка под полем ввода пароля */
+.field-hint {
+    display: block;
+    margin-top: 6px;
+    font-size: 12px;
+    color: var(--text-muted);
+}
+
+input, select, textarea {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: "RockStar", Arial, sans-serif;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--accent-pink);
+    box-shadow: 0 0 0 3px rgba(255, 32, 113, 0.2);
+}
+
+textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+button {
+    font-family: "Advaken Sans", Arial, sans-serif;
+}
+
+.auth-box form button.btn {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.auth-box p {
+    margin-top: 18px;
+    text-align: center;
+    color: var(--text-muted);
+}
+
+.auth-box p a {
+    color: var(--accent-pink);
+    font-weight: bold;
+}
+
+.auth-box p a:hover {
+    text-decoration: underline;
+}
+
+.error {
+    color: var(--accent-pink);
+    margin-bottom: 15px;
+    padding: 10px 14px;
+    background: rgba(255, 32, 113, 0.1);
+    border-left: 3px solid var(--accent-pink);
+    border-radius: var(--radius-sm);
+}
+
+.success {
+    color: var(--accent);
+    margin-bottom: 20px;
+    padding: 12px 16px;
+    background: rgba(252, 255, 26, 0.08);
+    border-left: 3px solid var(--accent);
+    border-radius: var(--radius-sm);
+    animation: fadeUp 0.4s ease both;
+}
+
+/* ===== ОЦЕНКА И ОТЗЫВЫ ===== */
+
+/* Оценка: форма выбора балла рядом с кнопкой */
+.rating-form {
+    display: flex;
+    gap: 10px;
+    max-width: 320px;
+    align-items: stretch;
+}
+
+.rating-form select {
+    flex: 1;
+}
+
+.rate-block {
+    margin-top: 30px;
+}
+
+.rate-block p {
+    margin-bottom: 10px;
+    color: var(--text-muted);
+}
+
+.stars {
+    display: flex;
+    gap: 5px;
+}
+
+.star-btn {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 35px;
+    height: 35px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    transition: all var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+}
+
+.star-btn:hover {
+    background: var(--accent-pink);
+    border-color: var(--accent-pink);
+    color: #fff;
+    transform: translateY(-2px);
+}
+
+/* Детали о фильме в две колонки */
+.about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+}
+
+.details-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.details-table td {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 15px;
+}
+
+.details-table td:first-child {
+    color: var(--text-muted);
+    width: 40%;
+}
+
+.actors-list li {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border-soft);
+    font-size: 15px;
+    color: var(--text);
+}
+
+/* Отзывы зрителей */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.review-card {
+    background: var(--bg-card);
+    padding: 20px;
+    border-radius: var(--radius);
+    border: 1px solid var(--border);
+}
+
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    border-bottom: 1px solid var(--border-soft);
+    padding-bottom: 10px;
+}
+
+.review-header strong {
+    color: var(--accent);
+}
+
+.review-rating {
+    color: #4CAF50;
+    font-weight: bold;
+}
+
+/* Компактная форма отзыва: подписи сверху, кнопка по нижнему краю поля */
+.review-form {
+    display: grid;
+    grid-template-columns: 120px minmax(0, 1fr) auto;
+    align-items: start;
+    gap: 14px 16px;
+    margin-bottom: 24px;
+    padding: 18px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.review-form label {
+    margin: 0 0 6px;
+    font-size: 13px;
+}
+
+.review-form textarea {
+    min-height: 90px;
+}
+
+.review-form .btn {
+    align-self: end;
+    white-space: nowrap;
+}
+
+.review-form-hint {
+    margin-bottom: 20px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.review-form-hint a {
+    color: var(--accent-pink);
+}
+
+/* ===== ПРОФИЛЬ ===== */
+
+.profile-info {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 26px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    animation: fadeUp 0.5s ease both;
+    position: relative;
+}
+
+.profile-info::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 20px; bottom: 20px;
+    width: 3px;
+    background: var(--accent-pink);
+    border-radius: 0 4px 4px 0;
+}
+
+.profile-info p {
+    color: var(--text-muted);
+    padding-left: 10px;
+}
+
+.profile-info strong {
+    color: var(--text);
+}
+
+.profile-info .btn {
+    align-self: flex-start;
+    margin-top: 8px;
+    margin-left: 10px;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    margin-top: 15px;
+}
+
+.profile-actions .btn {
+    margin: 0; /* Сбрасываем отступы кнопок в этом блоке */
+}
+
+/* ===== ТАРИФЫ И ПОДПИСКА ===== */
+
+.tariff-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 22px;
+}
+
+.tariff-card {
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 30px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    transition: all var(--transition);
+}
+
+.tariff-card:hover {
+    transform: translateY(-6px);
+    border-color: var(--accent-pink);
+    box-shadow: var(--shadow-pink);
+}
+
+.tariff-card.active {
+    border-color: var(--accent-pink);
+    position: relative;
+    background: linear-gradient(180deg, var(--bg-card), rgba(255, 32, 113, 0.05));
+}
+
+.tariff-card.active::before {
+    content: "Популярный";
+    position: absolute;
+    top: -12px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--accent-pink);
+    color: var(--text);
+    font-size: 12px;
+    font-weight: bold;
+    padding: 4px 14px;
+    border-radius: 30px;
+    white-space: nowrap;
+    box-shadow: 0 4px 10px rgba(255, 32, 113, 0.4);
+}
+
+.tariff-card h3 {
+    font-family: "Advaken Sans", Arial, sans-serif;
+    margin-bottom: 10px;
+    font-size: 20px;
+    color: var(--text);
+}
+
+.price {
+    font-size: 34px;
+    color: var(--accent);
+    margin-bottom: 20px;
+    font-weight: bold;
+    text-shadow: 0 0 15px rgba(252, 255, 26, 0.3);
+}
+
+.tariff-card ul {
+    list-style: none;
+    margin-bottom: 25px;
+    flex: 1;
+}
+
+.tariff-card li {
+    padding: 8px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.tariff-card li:last-child {
+    border-bottom: none;
+}
+
+.current-subscription {
+    padding: 16px 20px;
+    margin-bottom: 28px;
+    border-left: 3px solid #FCFF1A;
+    border-radius: 10px;
+    background: #161810;
+    color: #F5EEE5;
+    font-size: 15px;
+}
+
+.current-subscription span {
+    display: block;
+    margin-top: 6px;
+    color: #b8b8a8;
+    font-size: 13px;
+}
+
+.payment-form {
+    margin-top: 25px;
+}
+
+.payment-methods {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 14px;
+    margin: 16px 0 10px;
+}
+
+.method-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 16px;
+    border: 1px solid #2a2d24;
+    border-radius: 14px;
+    background: #161810;
+    cursor: pointer;
+    transition: border-color 0.25s ease, background 0.25s ease, box-shadow 0.25s ease;
+}
+
+.method-option:hover {
+    border-color: #FF2071;
+}
+
+.method-option input {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+}
+
+.method-option.selected,
+.method-option:has(input:checked) {
+    border-color: #FCFF1A;
+    background: rgba(252, 239, 26, 0.06);
+    box-shadow: inset 0 0 0 1px #FCFF1A;
+}
+
+.method-icon {
+    flex: 0 0 auto;
+    width: 38px;
+    height: 38px;
+    border-radius: 10px;
+    background: rgba(255, 32, 112, 0.12);
+    color: #FF2071;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 20px;
+}
+
+.method-icon-img {
+    width: 20px;
+    height: 20px;
+    display: block;
+}
+
+.current-subscription .btn-icon {
+    margin-right: 4px;
+}
+
+.method-name {
+    color: #F5EEE5;
+    font-size: 15px;
+}
+
+.payment-note {
+    margin-bottom: 30px;
+    color: #b8b8a8;
+    font-size: 13px;
+}
+
+.tariff-card.is-current {
+    border-color: #FCFF1A;
+}
+
+.tariff-card .btn[disabled] {
+    opacity: 0.55;
+    cursor: not-allowed;
+}
+
+/* ===== ПЛЕЕР ===== */
+
+.player-section {
+    padding: 10px 0 60px;
+    background-color: #0D0F0A;
+}
+
+.player-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-bottom: 18px;
+}
+
+.player-head .section-title {
+    margin: 0;
+}
+
+.player-hint {
+    font-size: 13px;
+    color: #b8b8a8;
+}
+
+.player {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #2a2d24;
+    border-radius: 16px;
+    background: #0D0F0A;
+    box-shadow: 0 14px 40px rgba(0, 0, 0, 0.45);
+}
+
+.player-screen {
+    position: relative;
+    aspect-ratio: 16 / 9;
+    overflow: hidden;
+    background: radial-gradient(circle at 30% 20%, rgba(255, 32, 112, 0.28), transparent 55%),
+                linear-gradient(135deg, #15170f, #0D0F0A 70%);
+}
+
+.player-backdrop {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.38;
+    filter: blur(2px);
+}
+
+.player-shade {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(12, 14, 9, 0.96), rgba(12, 14, 9, 0.15) 60%);
+}
+
+.player-caption {
+    position: absolute;
+    bottom: 26px;
+    left: 28px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    max-width: 70%;
+}
+
+.player-label {
+    font-size: 12px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #FCFF1A;
+}
+
+.player-caption strong {
+    font-family: "RockStar", Arial, sans-serif;
+    font-size: 26px;
+    color: #F5EEE5;
+}
+
+.player-big-play {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 78px;
+    height: 78px;
+    border: 2px solid #FCFF1A;
+    border-radius: 50%;
+    background: rgba(12, 14, 9, 0.65);
+    color: #FCFF1A;
+    font-size: 26px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.25s ease, color 0.25s ease, transform 0.25s ease, opacity 0.25s ease;
+}
+
+.player-big-play:hover {
+    background: #FF2071;
+    border-color: #FF2071;
+    color: #F5EEE5;
+    transform: translate(-50%, -50%) scale(1.08);
+}
+
+.player.is-playing .player-big-play {
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* Иконки плеера хранятся в assets/img */
+.player-big-play-icon {
+    width: 28px;
+    height: 32px;
+    display: block;
+}
+
+.player-icon {
+    width: 18px;
+    height: 18px;
+    display: block;
+}
+
+.player-controls {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    background: #12150e;
+    border-top: 1px solid #2a2d24;
+}
+
+.player-control {
+    flex: 0 0 auto;
+    width: 34px;
+    height: 34px;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    color: #F5EEE5;
+    font-size: 17px;
+    cursor: pointer;
+    transition: background 0.2s ease, color 0.2s ease;
+}
+
+.player-control:hover {
+    background: #FF2071;
+    color: #F5EEE5;
+}
+
+.player-time {
+    flex: 0 0 auto;
+    font-size: 13px;
+    color: #F5EEE5;
+    font-variant-numeric: tabular-nums;
+}
+
+.player-timeline {
+    position: relative;
+    flex: 1 1 auto;
+    height: 6px;
+    border-radius: 20px;
+    background: #2a2d24;
+    cursor: pointer;
+}
+
+.player-progress {
+    position: relative;
+    width: 0;
+    height: 100%;
+    border-radius: 20px;
+    background: #FCFF1A;
+}
+
+.player-knob {
+    position: absolute;
+    top: 50%;
+    right: -6px;
+    transform: translateY(-50%);
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #FCFF1A;
+    box-shadow: 0 0 8px rgba(252, 239, 26, 0.6);
+    opacity: 0;
+    transition: opacity 0.2s ease;
+}
+
+.player-timeline:hover .player-knob {
+    opacity: 1;
+}
+
+.player-volume-wrap,
+.player-settings-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.player-volume {
+    width: 80px;
+    accent-color: #FCFF1A;
+    cursor: pointer;
+}
+
+.player-settings-menu {
+    display: none;
+    position: absolute;
+    right: 0;
+    bottom: 44px;
+    z-index: 3;
+    min-width: 150px;
+    padding: 10px 12px;
+    border: 1px solid #2a2d24;
+    border-radius: 10px;
+    background: #161810;
+    color: #F5EEE5;
+    font-size: 13px;
+}
+
+.player-settings-wrap.open .player-settings-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.player-lock {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 14px;
+    padding: 24px;
+    text-align: center;
+}
+
+.player-lock-icon {
+    width: 50px;
+    height: 58px;
+    display: block;
+}
+
+.player-lock strong {
+    font-family: "RockStar", Arial, sans-serif;
+    font-size: 22px;
+    color: #F5EEE5;
+}
+
+.player-lock p {
+    max-width: 430px;
+    color: #b8b8a8;
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+.player-lock-buttons {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.player:fullscreen {
+    border-radius: 0;
+}
+
+.player:fullscreen .player-screen {
+    height: calc(100vh - 58px);
+    aspect-ratio: auto;
+}
+
+/* Трейлер: кнопка и локальное окно без внешнего видео */
+.trailer-trigger .btn-icon {
+    filter: brightness(0) invert(1);
+}
+
+.trailer-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.trailer-modal[hidden] {
+    display: none;
+}
+
+.trailer-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.8);
+}
+
+.trailer-modal-box {
+    position: relative;
+    width: min(560px, 100%);
+    padding: 24px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.6);
+}
+
+.trailer-modal-close {
+    position: absolute;
+    top: 14px;
+    right: 14px;
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+.trailer-modal-close img {
+    width: 14px;
+    height: 14px;
+    display: block;
+    filter: brightness(0) invert(1);
+}
+
+.trailer-modal-box h2 {
+    margin: 0 44px 16px 0;
+    font-family: "Advaken Sans", Arial, sans-serif;
+    font-size: 22px;
+    color: var(--accent);
+}
+
+.trailer-modal-poster {
+    display: block;
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 6px;
+}
+
+.trailer-modal-box p {
+    margin: 16px 0;
+    color: var(--text-muted);
+    font-size: 14px;
+    line-height: 1.5;
+}
+
+body.trailer-modal-open {
+    overflow: hidden;
+}
+
+/* ===== АДМИН-ПАНЕЛЬ ===== */
+
+/* Сайтовая шапка и подвал скрыты: панель работает как отдельный кабинет */
+.admin-page { padding-left: 232px; }
+
+.admin-page .header,
+.admin-page .footer,
+.admin-page #scrollTop { display: none; }
+
+.admin-page .page-head { padding-top: 32px; }
+
+/* Боковое меню: колонка на компьютере, нижняя панель на телефоне */
+.admin-sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    z-index: 200;
+    width: 232px;
+    display: flex;
+    flex-direction: column;
+    padding: 22px 14px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+}
+
+.admin-sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 10px 22px;
+    margin-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+    font-family: "NauryzRedKeds", "Advaken Sans", sans-serif;
+    font-size: 17px;
+    color: var(--text);
+}
+
+.admin-sidebar-logo {
+    width: 34px;
+    flex: 0 0 auto;
+}
+
+.admin-sidebar-brand-text {
+    white-space: nowrap;
+}
+
+.admin-sidebar-menu {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    flex: 1 1 auto;
+}
+
+.admin-sidebar-bottom {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+}
+
+.admin-sidebar-link {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    min-height: 46px;
+    padding: 10px 12px;
+    border-radius: var(--radius-sm);
+    color: var(--text-muted);
+    font-size: 14px;
+    transition: background var(--transition), color var(--transition);
+}
+
+.admin-sidebar-link:hover {
+    background: var(--bg-soft);
+    color: var(--text);
+}
+
+/* Активный раздел выделен жёлтым, чтобы не сливаться с кнопками сайта */
+.admin-sidebar-link.active {
+    background: var(--accent);
+    color: #0D0F0A;
+    font-weight: 600;
+}
+
+/* Иконки из assets/img белые, поэтому перекрашиваем их фильтрами */
+.admin-sidebar-icon {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+    opacity: 0.85;
+}
+
+.admin-sidebar-link:hover .admin-sidebar-icon {
+    opacity: 1;
+}
+
+.admin-sidebar-link.active .admin-sidebar-icon {
+    filter: brightness(0);
+    opacity: 1;
+}
+
+.admin-sidebar-label {
+    white-space: nowrap;
+}
+
+.admin-back {
+    display: inline-flex;
+    margin-bottom: 18px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.admin-back:hover {
+    color: var(--accent-pink);
+}
+
+/* Сводка и поиск помогают быстро оценить размер каталога */
+.admin-stats {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.admin-stat {
+    padding: 18px 20px;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.admin-stat span {
+    display: block;
+    margin-bottom: 6px;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.admin-stat strong {
+    color: var(--accent);
+    font-family: "Advaken Sans", Arial, sans-serif;
+    font-size: 28px;
+}
+
+.admin-toolbar {
+    display: flex;
+    align-items: end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 18px;
+}
+
+.admin-search {
+    flex: 1 1 260px;
+    max-width: 360px;
+}
+
+.admin-search label {
+    margin: 0 0 6px;
+}
+
+.admin-search input {
+    margin-top: 0;
+}
+
+.admin-found {
+    padding-bottom: 12px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.admin-empty {
+    padding: 18px;
+    text-align: center;
+    color: var(--text-muted);
+    background: var(--bg-card);
+    border: 1px dashed var(--border);
+    border-radius: var(--radius);
+}
+
+/* Таблица лежит в отдельной обёртке, чтобы не ломаться на узких экранах */
+.admin-table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.admin-table {
+    width: 100%;
+    margin-bottom: 0;
+    border-collapse: collapse;
+    background-color: var(--bg-card);
+    font-size: 14px;
+}
+
+.admin-table th, .admin-table td {
+    padding: 14px 16px;
+    border-bottom: 1px solid var(--border);
+    text-align: left;
+    vertical-align: middle;
+}
+
+.admin-table th {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+    background-color: var(--bg-soft);
+    color: var(--accent);
+    font-family: "Advaken Sans", Arial, sans-serif;
+    white-space: nowrap;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background-color: rgba(255, 32, 113, 0.05);
+}
+
+.admin-table td a {
+    display: inline-flex;
+    margin: 0 8px 6px 0;
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+    background: var(--bg-soft);
+    color: var(--accent);
+    text-decoration: none;
+    transition: background var(--transition), color var(--transition);
+}
+
+.admin-table td a:hover {
+    background: rgba(255, 32, 113, 0.14);
+    color: var(--accent-pink);
+}
+
+.admin-action-delete {
+    color: var(--accent-pink) !important;
+}
+
+.admin-form {
+    max-width: 720px;
+    background-color: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 28px;
+    border-top: 3px solid var(--accent-pink);
+}
+
+.admin-form > label:first-of-type {
+    margin-top: 0;
+}
+
+.admin-form label {
+    margin-top: 18px;
+}
+
+.admin-form .btn {
+    margin-top: 24px;
+}
+
+.admin-form label:has(input[type="checkbox"]) {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin-top: 16px;
+    color: var(--text);
+}
+
+.admin-form input[type="checkbox"] {
+    width: auto;
+    accent-color: var(--accent-pink);
+    cursor: pointer;
+}
+
+.admin-panel-title {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 14px;
+    margin-bottom: 20px;
+}
+
+.admin-panel-title h2 {
+    font-family: "NauryzRedKeds", "Advaken Sans", sans-serif;
+    font-size: 22px;
+}
+
+.admin-user-cell {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+}
+
+.admin-user-cell strong {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.admin-user-cell span {
+    color: var(--text-muted);
+    font-size: 12px;
+    overflow-wrap: anywhere;
+}
+
+.admin-role {
+    display: inline-flex;
+    padding: 4px 10px;
+    border-radius: 999px;
+    background: var(--bg-soft);
+    color: var(--text-muted);
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.admin-role.is-admin {
+    background: rgba(255, 32, 113, 0.14);
+    color: var(--accent-pink);
+}
+
+.admin-role.is-subscriber {
+    background: rgba(252, 239, 26, 0.12);
+    color: var(--accent);
+}
+
+.admin-subscription {
+    font-size: 13px;
+}
+
+.admin-subscription.is-active {
+    color: var(--accent);
+}
+
+.admin-subscription.is-empty {
+    color: var(--text-muted);
+}
+
+.admin-subscription small {
+    display: block;
+    color: var(--text-muted);
+    font-size: 11px;
+}
+
+.admin-form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0 18px;
+}
+
+.admin-form-grid .admin-field {
+    min-width: 0;
+    margin-top: 18px;
+}
+
+.admin-form-grid .admin-field:nth-child(1),
+.admin-form-grid .admin-field:nth-child(2) {
+    margin-top: 0;
+}
+
+.admin-form .admin-field label {
+    display: block;
+    margin: 0 0 6px;
+    font-size: 13px;
+}
+
+.admin-form-note {
+    grid-column: 1 / -1;
+    margin-top: 16px;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.admin-form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+}
+
+.admin-form-actions .btn {
+    margin-top: 0;
+}
+
+.admin-form-actions .btn-outline {
+    color: var(--text-muted);
+}
+
+.admin-inline-form {
+    display: inline;
+    margin: 0;
+}
+
+.admin-self-mark {
+    display: inline-flex;
+    padding: 6px 10px;
+    color: var(--text-muted);
+    font-size: 13px;
+}
+
+.admin-table td .admin-table-action {
+    display: inline-flex;
+    margin: 0 8px 6px 0;
+    padding: 6px 10px;
+    border: 0;
+    border-radius: var(--radius-sm);
+    background: var(--bg-soft);
+    color: var(--accent);
+    font-size: 13px;
+    cursor: pointer;
+    transition: background var(--transition), color var(--transition);
+}
+
+.admin-table td .admin-table-action:hover {
+    background: rgba(255, 32, 113, 0.14);
+    color: var(--accent-pink);
+}
+
+.admin-table td .admin-table-action.is-danger {
+    color: var(--accent-pink);
+}
+
+/* ===== ПОДВАЛ ===== */
+
+.footer {
+    background-color: var(--bg);
+    border-top: 1px solid var(--border);
+    padding: 50px 0 20px;
+    margin-top: 60px;
+    position: relative;
+}
+
+.footer::before {
+    content: "";
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--accent-pink), var(--accent), transparent);
+    opacity: 0.5;
+}
+
+.footer-inner {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 30px;
+    margin-bottom: 25px;
+}
+
+.footer-logo {
+    display: inline-block;
+    margin-bottom: 12px;
+    text-decoration: none;
+    transition: filter var(--transition);
+}
+
+.footer-logo:hover {
+    filter: drop-shadow(0 0 10px rgba(252, 255, 26, 0.4));
+}
+
+.footer-logo-img {
+    height: 32px; /* Логотип в подвале меньше, чтобы не доминировать */
+    width: auto;
+    display: block;
+}
+
+.footer-social-title {
+    font-family: "Advaken Sans", Arial, sans-serif;
+    font-size: 13px;
+    color: var(--text-muted);
+    margin: 14px 0 8px;
+}
+
+.footer-socials {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 14px;
+}
+
+.footer .social-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    width: 62px;
+    margin-bottom: 0;
+    text-align: center;
+    font-size: 11px;
+    line-height: 1.2;
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+.footer .social-link:hover {
+    color: var(--accent-pink);
+    padding-left: 0;
+}
+
+.footer .social-link:hover .social-icon {
+    opacity: 1;
+    transform: translateY(-2px);
+}
+
+.footer-title {
+    font-family: "Advaken Sans", Arial, sans-serif;
+    margin-bottom: 12px;
+    color: var(--accent);
+}
+
+.footer a {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-muted);
+    transition: color var(--transition), padding-left var(--transition);
+}
+
+.footer a:hover {
+    color: var(--accent-pink);
+    padding-left: 4px;
+}
+
+.footer-copy {
+    text-align: center;
+    color: var(--text-muted);
+    font-size: 14px;
+    border-top: 1px solid var(--border);
+    padding-top: 18px;
+}
+
+/* ===== КНОПКА «НАВЕРХ» ===== */
+
+#scrollTop {
+    position: fixed;
+    right: 24px;
+    bottom: 24px;
+    width: 48px;
+    height: 48px;
+    padding: 0;
+    border-radius: 50%;
+    background: var(--accent-pink);
+    color: var(--text);
+    border: none;
+    font-size: 22px;
+    font-weight: bold;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 90;
+    box-shadow: 0 8px 24px rgba(255, 32, 113, 0.4);
+    transition: transform var(--transition), background-color var(--transition);
+}
+
+#scrollTop:hover {
+    background: var(--accent);
+    color: var(--bg);
+    transform: translateY(-3px);
+    box-shadow: 0 8px 24px rgba(252, 255, 26, 0.4);
+}
+
+/* ===== АНИМАЦИИ ===== */
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes cardIn {
+    from { opacity: 0; transform: translateY(18px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(255, 32, 113, 0.5); }
+    50% { box-shadow: 0 0 0 10px rgba(255, 32, 113, 0); }
+}
+
+/* Отключаем движение для пользователей с ограничениями */
+@media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+        animation-duration: 0.001ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.001ms !important;
+        scroll-behavior: auto !important;
+    }
+}
+
+.reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* ===== КАТЕГОРИИ В АДМИНКЕ (ОТСТУП) ===== */
+
+.admin-form + .admin-table-wrap {
+    margin-top: 40px;
+}
+
+/* ===== АДАПТАЦИЯ ===== */
+
+@media (max-width: 1180px) {
+    .header-inner { gap: 12px; }
+    .header-panel { gap: 10px; }
+    .nav a { padding: 0 9px; font-size: 16px; }
+    .search-form { flex-basis: 210px; width: 210px; }
+}
+
+@media (max-width: 1050px) {
+    .header-inner {
+        display: grid;
+        grid-template-columns: 1fr auto auto;
+        align-items: center;
+        gap: 12px;
+    }
+    .logo { grid-column: 1; grid-row: 1; }
+    .user-menu { grid-column: 2; grid-row: 1; margin-left: 0; }
+    .burger { grid-column: 3; grid-row: 1; display: flex; }
+    .header-panel {
+        grid-column: 1 / -1;
+        grid-row: 2;
+        display: none;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        width: 100%;
+        padding-top: 12px;
+        margin-top: 2px;
+        border-top: 1px solid var(--border);
+    }
+    .header-panel.open { display: flex; animation: fadeUp 0.3s ease both; }
+    .nav { flex-direction: column; align-items: stretch; gap: 4px; }
+    .nav a { width: 100%; height: 42px; padding: 0 12px; font-size: 17px; }
+    .nav a::after { display: none; }
+    .nav a:hover { background: rgba(255, 32, 113, 0.1); }
+    .search-form { flex: none; width: 100%; max-width: none; }
+    .admin-page { padding-left: 76px; }
+    .admin-sidebar {
+        width: 76px;
+        padding: 18px 8px;
+        align-items: center;
+    }
+    .admin-sidebar-brand {
+        justify-content: center;
+        width: 100%;
+        padding: 4px 0 18px;
+    }
+    .admin-sidebar-logo { width: 30px; }
+    .admin-sidebar-brand-text { display: none; }
+    .admin-sidebar-menu,
+    .admin-sidebar-bottom {
+        width: 100%;
+        align-items: center;
+    }
+    .admin-sidebar-link {
+        justify-content: center;
+        width: 100%;
+        min-height: 54px;
+        padding: 12px 0;
+    }
+    .admin-sidebar-icon { width: 24px; height: 24px; }
+    .admin-sidebar-label { display: none; }
+}
+
+@media (max-width: 1000px) {
+    .hero { padding: 90px 0; }
+    .content-hero-inner { gap: 30px; }
+    .content-poster { width: 260px; }
+    .footer-inner { gap: 20px; }
+}
+
+@media (max-width: 820px) {
+    .hero-poster { width: 115px; opacity: 0.22; }
+    .hero-poster:nth-child(n+7) { display: none; }
+    .content-hero-inner { flex-direction: column; align-items: center; text-align: center; }
+    .content-hero-inner > div { width: 100%; }
+/* На планшетах и телефонах название и оценку центрируем */
+    .original-title { justify-content: center; }
+    .content-rating-block { margin-left: auto; margin-right: auto; }
+    .content-buttons, .stars, .rate-block .rate-title { justify-content: center; }
+    .content-poster { width: min(280px, 80%); }
+    .content-tags { justify-content: center; }
+    .content-buttons { justify-content: center; }
+    .content-description { margin-left: auto; margin-right: auto; }
+    .section { padding: 55px 0; }
+    .auth-page { padding: 60px 0; }
+    .footer-inner { grid-template-columns: repeat(2, 1fr); }
+    .footer-inner > div:first-child { grid-column: 1 / -1; }
+    .filter-box { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .content-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; }
+    .review-form {
+        grid-template-columns: 120px minmax(0, 1fr);
+    }
+    .review-form .btn {
+        grid-column: 1 / -1;
+        justify-self: start;
+    }
+    .about-grid {
+        grid-template-columns: 1fr;
+    }
+    .content-poster-wrap {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+    }
+    .player-caption strong { font-size: 22px; }
+    .player-big-play { width: 66px; height: 66px; font-size: 22px; }
+    .payment-methods { grid-template-columns: 1fr; }
+    .player-lock strong { font-size: 19px; }
+    .player-lock-icon { width: 42px; height: 48px; }
+    .admin-stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .admin-toolbar { align-items: stretch; }
+    .admin-search { max-width: none; }
+    .admin-form-grid { grid-template-columns: 1fr; }
+    .admin-form-grid .admin-field:nth-child(2) { margin-top: 18px; }
+}
+
+@media (max-width: 640px) {
+    .container { padding: 0 16px; }
+    .header { padding: 10px 0; }
+    .logo-img { height: 32px; }
+    .burger { width: 36px; height: 36px; }
+    .user-menu .header-icon-link { width: 36px; height: 36px; }
+    .header-icon { width: 18px; height: 18px; }
+    .hero { padding: 70px 0; }
+    .hero-poster { width: 90px; opacity: 0.18; }
+    .hero-poster:nth-child(n+5) { display: none; }
+    .hero-buttons { flex-direction: column; }
+    .hero-buttons .btn { width: 100%; }
+    .section { padding: 45px 0; }
+    .page-head { padding: 22px 0 16px; }
+    .page-head h1 { font-size: 26px; }
+    .page-head + .section { padding-top: 24px; }
+    .content-hero-inner { gap: 22px; }
+    .original-title { font-size: 15px; flex-wrap: wrap; }
+    .content-rating-block { padding: 8px 14px; }
+    .big-rating { font-size: 26px; }
+    .content-buttons .btn { flex: 1 1 auto; }
+    .content-grid { gap: 12px; }
+    .card-info { padding: 12px; }
+    .card-info h3 { font-size: 18px; }
+    .card-info p { font-size: 12px; }
+    .filter-box, .category-list { gap: 8px; }
+    .category-item, .filter-btn { padding: 8px 10px; font-size: 12px; }
+    .stars { flex-wrap: wrap; }
+    .star-btn { width: 32px; height: 32px; font-size: 13px; }
+    .season-box { padding: 16px; }
+    .episode-list li { flex-wrap: wrap; gap: 4px; }
+    .review-card { padding: 16px; }
+    .player-head { gap: 8px; }
+    .player-hint { font-size: 11px; }
+    .player-controls { gap: 6px; padding: 8px; }
+    .player-time { font-size: 10px; }
+    .player-timeline { min-width: 40px; }
+    .auth-box { padding: 22px; }
+    .footer { padding: 40px 0 16px; margin-top: 40px; }
+    .footer-inner { grid-template-columns: 1fr; gap: 24px; }
+    .footer-inner > div:first-child { grid-column: auto; }
+    .footer-copy { font-size: 12px; }
+    .rating-form { flex-direction: column; }
+    .rating-form .btn { width: 100%; }
+    #scrollTop { right: 16px; bottom: 16px; width: 44px; height: 44px; }
+    .logo-img {
+        height: 32px; /* На мобильных логотип уменьшаем */
+    }
+    .footer-logo-img {
+        height: 28px;
+    }
+    .review-form {
+        grid-template-columns: 1fr;
+    }
+    .review-form .btn {
+        grid-column: auto;
+        width: 100%;
+    }
+    .player-section { padding-bottom: 45px; }
+    .player-hint { font-size: 12px; }
+    .player-controls { gap: 8px; padding: 10px; }
+    .player-time { font-size: 11px; }
+    .player-volume { display: none; }
+    .player-caption { bottom: 16px; left: 16px; max-width: 85%; }
+    .player-caption strong { font-size: 18px; }
+    .player-big-play { width: 56px; height: 56px; font-size: 19px; }
+    .payment-methods { gap: 10px; }
+    .method-option { padding: 12px; }
+    .current-subscription { padding: 14px 16px; font-size: 14px; }
+    .player-lock { gap: 10px; padding: 16px; }
+    .player-lock strong { font-size: 16px; }
+    .player-lock p { font-size: 12px; }
+    .player-lock-icon { width: 34px; height: 40px; }
+    .player-lock-buttons .btn { padding: 9px 14px; font-size: 13px; }
+    .player-big-play-icon { width: 22px; height: 26px; }
+    .player-icon { width: 16px; height: 16px; }
+    .btn-icon { width: 14px; height: 14px; }
+    .stars {
+        display: grid;
+        grid-template-columns: repeat(5, 40px);
+        justify-content: center;
+        gap: 6px;
+    }
+    .star-btn {
+        width: 40px;
+        height: 40px;
+        font-size: 14px;
+    }
+    .admin-page {
+        padding-left: 0;
+        padding-top: 58px;
+        padding-bottom: 78px;
+    }
+    .admin-page .page-head { padding-top: 16px; }
+    .admin-sidebar {
+        position: static;
+        width: auto;
+        padding: 0;
+        border: none;
+        background: transparent;
+    }
+    .admin-sidebar-brand {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 201;
+        height: 58px;
+        margin: 0;
+        padding: 0 16px;
+        background: rgba(22, 24, 16, 0.98);
+        border-bottom: 1px solid var(--border);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    .admin-sidebar-logo { width: 28px; }
+    .admin-sidebar-brand-text { display: block; font-size: 16px; }
+    .admin-sidebar-menu {
+        position: fixed;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 201;
+        flex-direction: row;
+        gap: 2px;
+        padding: 6px 4px calc(6px + env(safe-area-inset-bottom));
+        background: rgba(22, 24, 16, 0.98);
+        border-top: 1px solid var(--border);
+        box-shadow: 0 -6px 20px rgba(0, 0, 0, 0.35);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+    }
+    .admin-sidebar-link {
+        flex: 1 1 0;
+        flex-direction: column;
+        justify-content: center;
+        gap: 4px;
+        min-width: 0;
+        min-height: 58px;
+        padding: 6px 2px;
+        font-size: 10px;
+        text-align: center;
+    }
+    .admin-sidebar-icon { width: 22px; height: 22px; }
+    .admin-sidebar-label {
+        display: block;
+        line-height: 1.1;
+        white-space: normal;
+    }
+    .admin-sidebar-bottom { display: none; }
+    .admin-stat { padding: 14px 16px; }
+    .admin-stat strong { font-size: 22px; }
+    .admin-form { padding: 20px; }
+    .admin-form-grid .admin-field { margin-top: 14px; }
+    .admin-form-grid .admin-field:nth-child(2) { margin-top: 14px; }
+    .admin-table-wrap { overflow: visible; border: none; }
+    .admin-table, .admin-table tbody, .admin-table tr, .admin-table td { display: block; width: 100%; }
+    .admin-table thead { display: none; }
+    .admin-table tr { padding: 14px 0; border-bottom: 1px solid var(--border); }
+    .admin-table tr:first-child { padding-top: 0; }
+    .admin-table td {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 6px 0;
+        border: none;
+        text-align: right;
+        white-space: normal;
+    }
+    .admin-table td::before {
+        content: attr(data-label);
+        flex: 0 0 auto;
+        color: var(--text-muted);
+        font-weight: 600;
+        text-align: left;
+    }
+    .admin-table td[data-label="Действия"] {
+        justify-content: flex-start;
+        flex-wrap: wrap;
+        margin-top: 8px;
+        text-align: left;
+    }
+    .admin-table td[data-label="Действия"]::before { display: none; }
+}
+
+@media (max-width: 480px) {
+    .content-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+    .card-info { padding: 10px; }
+    .card-info h3 { font-size: 16px; }
+    .content-buttons { flex-direction: column; align-items: stretch; }
+    .content-buttons .btn { width: 100%; }
+    .tariff-card { padding: 22px 16px; }
+    .price { font-size: 28px; }
+    .payment-methods { gap: 8px; }
+    .method-option { padding: 10px; gap: 8px; }
+    .player-lock-buttons .btn { width: 100%; }
+    .player-volume-wrap { display: none; }
+    .trailer-modal-box { padding: 18px; }
+    .admin-stats { grid-template-columns: 1fr; }
+    .admin-form { padding: 18px; }
+    .admin-form-actions .btn { flex: 1 1 100%; }
+    .admin-panel-title h2 { font-size: 20px; }
+}
+
+@media (max-width: 360px) {
+    .content-grid { grid-template-columns: 1fr; }
+    .card-info h3 { font-size: 15px; }
+    .content-poster { width: 100%; }
+    .logo-img { height: 28px; }
+    .stars {
+        grid-template-columns: repeat(5, 34px);
+        gap: 5px;
+    }
+    .star-btn {
+        width: 34px;
+        height: 34px;
+        font-size: 12px;
+    }
+    .admin-sidebar-link { font-size: 9px; }
+    .admin-sidebar-icon { width: 20px; height: 20px; }
+}
