@@ -20,7 +20,7 @@ $error = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Пробелы по краям полей убираем, чтобы пустые значения не попали в базу.
     $title = trim($_POST['title']);
-    $type = $_POST['type'];
+    $type = normalizeContentType(isset($_POST['type']) ? $_POST['type'] : '');
     $description = trim($_POST['description']);
     $year = (int)$_POST['year'];
     $categoryId = (int)$_POST['category_id'];
@@ -33,29 +33,46 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($title == "" || $description == "" || $year == 0) {
         $error = "Заполните название, описание и год.";
+    } elseif ($type === '') {
+        $error = "Выберите тип: фильм или сериал.";
     } else {
-        // Рейтинг новой записи пока нулевой: его поставят зрители.
-        $query = $db->prepare("INSERT INTO content
-            (title, type, description, year, rating, poster, category_id, director, actors, is_new, is_popular)
-            VALUES
-            (:title, :type, :description, :year, 0, :poster, :category_id, :director, :actors, :is_new, :is_popular)");
+        // Жёсткое ограничение: одинаковое название не может существовать в двух типах.
+        $existing = findContentByTitle($db, $title);
+        if ($existing) {
+            $error = "Название «" . $title . "» уже есть в каталоге как " .
+                     ($existing['type'] === 'movie' ? 'фильм' : 'сериал') .
+                     ". Одно название не может быть и фильмом, и сериалом.";
+        }
+    }
 
-        $query->execute([
-            "title" => $title,
-            "type" => $type,
-            "description" => $description,
-            "year" => $year,
-            "poster" => $poster,
-            "category_id" => $categoryId,
-            "director" => $director,
-            "actors" => $actors,
-            "is_new" => $isNew,
-            "is_popular" => $isPopular
-        ]);
+    if ($error === "") {
+        try {
+            // Рейтинг новой записи пока нулевой: его поставят зрители.
+            $query = $db->prepare("INSERT INTO content
+                (title, type, description, year, rating, poster, category_id, director, actors, is_new, is_popular)
+                VALUES
+                (:title, :type, :description, :year, 0, :poster, :category_id, :director, :actors, :is_new, :is_popular)");
 
-        // После сохранения уходим к общему списку контента.
-        header("Location: index.php");
-        exit;
+            $query->execute([
+                "title" => $title,
+                "type" => $type,
+                "description" => $description,
+                "year" => $year,
+                "poster" => $poster,
+                "category_id" => $categoryId,
+                "director" => $director,
+                "actors" => $actors,
+                "is_new" => $isNew,
+                "is_popular" => $isPopular
+            ]);
+
+            // После сохранения уходим к общему списку контента.
+            header("Location: index.php");
+            exit;
+        } catch (PDOException $e) {
+            // На случай нарушения уникальности прямо в базе данных.
+            $error = "Не удалось сохранить: такое название уже есть в каталоге.";
+        }
     }
 }
 

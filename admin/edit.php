@@ -39,7 +39,7 @@ $error = "";
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Лишние пробелы убираем, числа приводим к числовому виду.
     $title = trim($_POST['title']);
-    $type = $_POST['type'];
+    $type = normalizeContentType(isset($_POST['type']) ? $_POST['type'] : '');
     $description = trim($_POST['description']);
     $year = (int)$_POST['year'];
     $categoryId = (int)$_POST['category_id'];
@@ -52,37 +52,54 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($title == "" || $description == "" || $year == 0) {
         $error = "Заполните название, описание и год.";
+    } elseif ($type === '') {
+        $error = "Выберите тип: фильм или сериал.";
     } else {
-        $query = $db->prepare("UPDATE content SET
-            title = :title,
-            type = :type,
-            description = :description,
-            year = :year,
-            poster = :poster,
-            category_id = :category_id,
-            director = :director,
-            actors = :actors,
-            is_new = :is_new,
-            is_popular = :is_popular
-            WHERE id = :id");
+        // Жёсткое ограничение: одинаковое название не может существовать в двух типах.
+        $existing = findContentByTitle($db, $title, $id);
+        if ($existing) {
+            $error = "Название «" . $title . "» уже есть в каталоге как " .
+                     ($existing['type'] === 'movie' ? 'фильм' : 'сериал') .
+                     ". Одно название не может быть и фильмом, и сериалом.";
+        }
+    }
 
-        $query->execute([
-            "title" => $title,
-            "type" => $type,
-            "description" => $description,
-            "year" => $year,
-            "poster" => $poster,
-            "category_id" => $categoryId,
-            "director" => $director,
-            "actors" => $actors,
-            "is_new" => $isNew,
-            "is_popular" => $isPopular,
-            "id" => $id
-        ]);
+    if ($error === "") {
+        try {
+            $query = $db->prepare("UPDATE content SET
+                title = :title,
+                type = :type,
+                description = :description,
+                year = :year,
+                poster = :poster,
+                category_id = :category_id,
+                director = :director,
+                actors = :actors,
+                is_new = :is_new,
+                is_popular = :is_popular
+                WHERE id = :id");
 
-        // Изменения сохранены — возвращаемся к списку.
-        header("Location: index.php");
-        exit;
+            $query->execute([
+                "title" => $title,
+                "type" => $type,
+                "description" => $description,
+                "year" => $year,
+                "poster" => $poster,
+                "category_id" => $categoryId,
+                "director" => $director,
+                "actors" => $actors,
+                "is_new" => $isNew,
+                "is_popular" => $isPopular,
+                "id" => $id
+            ]);
+
+            // Изменения сохранены — возвращаемся к списку.
+            header("Location: index.php");
+            exit;
+        } catch (PDOException $e) {
+            // На случай нарушения уникальности прямо в базе данных.
+            $error = "Не удалось сохранить: такое название уже есть в каталоге.";
+        }
     }
 }
 

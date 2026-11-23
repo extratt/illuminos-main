@@ -90,8 +90,36 @@ function getCategories($db) {
     return $result->fetchAll(PDO::FETCH_ASSOC);
 }
 
+// normalizeContentType($type): допускает только 'movie' или 'series'.
+function normalizeContentType($type) {
+    return ($type === 'movie' || $type === 'series') ? $type : '';
+}
+
+// findContentByTitle($db, $title, $excludeId): ищет уже существующее название.
+// Одно и то же название не может быть одновременно фильмом и сериалом.
+function findContentByTitle($db, $title, $excludeId = 0) {
+    $sql = "SELECT id, type FROM content WHERE title = :title";
+    $params = ["title" => $title];
+
+    if ($excludeId > 0) {
+        $sql .= " AND id <> :exclude_id";
+        $params["exclude_id"] = $excludeId;
+    }
+    $sql .= " LIMIT 1";
+
+    $query = $db->prepare($sql);
+    $query->execute($params);
+
+    return $query->fetch(PDO::FETCH_ASSOC) ?: null;
+}
+
 // getContent($db, $type, $categoryId, $search): возвращает фильмы или сериалы с учётом фильтров.
 function getContent($db, $type, $categoryId = 0, $search = "") {
+    // Тип жёстко ограничен: вкладка фильмов не может показать сериалы и наоборот.
+    if (normalizeContentType($type) === '') {
+        return [];
+    }
+
     $sql = "SELECT content.*, categories.name AS category_name
             FROM content
             LEFT JOIN categories ON content.category_id = categories.id
